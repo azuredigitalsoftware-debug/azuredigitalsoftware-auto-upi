@@ -163,7 +163,7 @@ async function loadOrders(){
 
 async function approveOrder(orderId){
   let link = prompt("Enter download link to send to customer:");
-  if(!link) return alert("Download link required!");
+
 
   const res = await fetch("/api/orders/" + orderId + "/approve", {
     method:"POST",
@@ -206,3 +206,4 @@ function logout(){
 
 </body>
 </html>
+

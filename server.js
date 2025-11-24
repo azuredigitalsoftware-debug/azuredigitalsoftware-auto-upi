@@ -2,11 +2,17 @@ const express = require("express");
 const nodemailer = require("nodemailer");
 const multer = require("multer");
 const path = require("path");
+const favicon = require('serve-favicon');
 require("dotenv").config();
 
 const app = express();
+
+// must be after defining "app"
+app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 // Serve public folder (frontend)
 app.use(express.static(path.join(__dirname, "public")));
@@ -131,5 +137,6 @@ app.post("/api/orders/:id/reject", (req, res) => {
 // --------------------- START SERVER ---------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🔥 Server running at http://localhost:${PORT}`));
+
 
 

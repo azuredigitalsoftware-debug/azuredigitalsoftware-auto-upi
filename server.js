@@ -1,8 +1,3 @@
-const favicon = require('serve-favicon');
-const path = require('path');
-
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-
 const express = require("express");
 const nodemailer = require("nodemailer");
 const multer = require("multer");
@@ -136,4 +131,5 @@ app.post("/api/orders/:id/reject", (req, res) => {
 // --------------------- START SERVER ---------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🔥 Server running at http://localhost:${PORT}`));
+
 

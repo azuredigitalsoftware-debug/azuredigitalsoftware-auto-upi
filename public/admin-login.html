@@ -3,6 +3,7 @@
 <head>
 <title>Admin Login</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body {
   background:#0a0f1a;
@@ -12,75 +13,147 @@ body {
   align-items:center;
   height:100vh;
   color:white;
+  overflow:hidden;
+}
+
+/* Soft glow floating animation */
+@keyframes float {
+  0% { transform:translateY(0); }
+  50% { transform:translateY(-8px); }
+  100% { transform:translateY(0); }
 }
 
 .box {
   background:#111b2b;
-  padding:25px;
-  border-radius:14px;
+  padding:35px 25px;
+  border-radius:16px;
   width:90%;
   max-width:350px;
-  border:1px solid rgba(255,255,255,0.1);
+  border:1px solid rgba(0,255,198,0.3);
   text-align:center;
+  box-shadow:0 0 12px rgba(0,255,198,0.1);
+  animation:float 3s infinite ease-in-out;
+}
+
+/* Title Glow */
+h2 {
+  text-shadow:0 0 10px #00ffc6;
+}
+
+.inputBox{
+  position:relative;
 }
 
 input {
   width:100%;
   margin-top:12px;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.2);
+  padding:14px;
+  border-radius:12px;
+  border:1px solid rgba(0,255,198,0.3);
   background:#0a0f1a;
   color:white;
-  font-size:15px;
+  font-size:16px;
+  outline:none;
+  transition:0.3s;
 }
 
+input:focus {
+  box-shadow:0 0 10px #00ffc688;
+  border-color:#00ffc6;
+}
+
+/* Eye Icon */
+.eye{
+  position:absolute;
+  right:12px;
+  top:23px;
+  cursor:pointer;
+  font-size:18px;
+  color:#00ffc6;
+}
+
+/* Button Ripple */
 .btn {
   width:100%;
-  margin-top:16px;
+  margin-top:20px;
   padding:14px;
   background:#00ffc6;
   color:#012;
   border:none;
-  border-radius:12px;
+  border-radius:14px;
   font-weight:700;
   cursor:pointer;
-  transition:.3s;
+  transition:0.3s;
+  font-size:16px;
+  overflow:hidden;
+  position:relative;
+}
+.btn:active { transform:scale(0.96); }
+
+.btn::after{
+  content:"";
+  position:absolute;
+  width:0;
+  height:0;
+  top:50%;
+  left:50%;
+  background:white;
+  opacity:0.3;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  transition:0.4s ease;
+}
+.btn:active::after{
+  width:250px;
+  height:250px;
 }
 
-.btn:hover {
-  transform:scale(1.04);
-}
 .error {
-  margin-top:12px;
+  margin-top:14px;
   color:#ff6b6b;
-  font-size:14px;
+  font-size:15px;
 }
+
 </style>
 </head>
 
 <body>
 
 <div class="box">
-  <h2>Admin Login</h2>
-  <input id="password" type="password" placeholder="Enter admin password">
-  <button class="btn" onclick="login()">Login</button>
+  <h2>🔐 Admin Login</h2>
+
+  <div class="inputBox">
+    <input id="password" type="password" placeholder="Enter admin password">
+    <span class="eye" onclick="togglePassword()">👁</span>
+  </div>
+
+  <button class="btn" onclick="login()">Login 🚀</button>
   <div id="msg" class="error"></div>
 </div>
 
+
 <script>
-const ADMIN_PASSWORD = "azuredigital2025"; // 🔐 CHANGE THIS PASSWORD
+const ADMIN_PASSWORD = "azuredigital2025"; // 🔥 CHANGE BEFORE LAUNCH
 
 function login(){
   const pass = document.getElementById("password").value;
 
   if(pass === ADMIN_PASSWORD){
     localStorage.setItem("adminLoggedIn", "true");
-    window.location.href = "admin.html";
+
+    document.querySelector(".btn").innerHTML = "✔ Verified... Redirecting";
+    setTimeout(()=> window.location.href = "admin.html", 800);
   } else {
-    document.getElementById("msg").innerText = "❌ Incorrect password";
+    document.getElementById("msg").innerText = "❌ Incorrect Password — Try again";
   }
 }
+
+// 👁 Show / Hide password
+function togglePassword(){
+  const input = document.getElementById("password");
+  input.type = input.type === "password" ? "text" : "password";
+}
+
 </script>
 
 </body>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout | Azure Digital Software</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body{background:#020617;color:#fff;font-family:'Inter',sans-serif;margin:0;padding:24px;display:flex;justify-content:center;}
+    .box{max-width:480px;width:100%;background:#0b0b12;border-radius:18px;border:1px solid #1f2937;padding:20px;box-shadow:0 0 30px rgba(0,0,0,.7);}
+    h1{text-align:center;margin-bottom:18px;}
+    .summary{background:#020617;border-radius:12px;border:1px solid #111827;padding:14px;margin-bottom:16px;font-size:14px;}
+    .summary div{display:flex;justify-content:space-between;margin:2px 0;}
+
+    label{display:block;font-size:13px;margin-top:8px;margin-bottom:4px;}
+    input,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #111827;background:#020617;color:#fff;font-size:14px;}
+    textarea{height:70px;resize:none;}
+
+    /* 🚀 PREMIUM PAY BUTTON */
+    .checkout-btn {
+      width: 100%;
+      padding: 16px;
+      margin-top: 15px;
+      border-radius: 14px;
+      background: linear-gradient(90deg, #00ffc6, #0096ff);
+      color: #00261a;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: 0.3s ease-in-out;
+      box-shadow: 0 0 12px rgba(0, 255, 198, 0.35);
+    }
+
+    .checkout-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 255, 198, 0.7);
+      letter-spacing: 0.5px;
+    }
+
+    .checkout-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* Processing mode */
+    .checkout-btn.loading {
+      pointer-events: none;
+      opacity: 0.6;
+      background: linear-gradient(90deg, #3b3b3b, #6d6d6d);
+      color: white;
+      box-shadow: none;
+    }
+
+    .msg{margin-top:10px;font-size:13px;color:#9ca3af;text-align:center;}
+  </style>
+</head>
+
+<body>
+<div class="box">
+  <h1>Checkout</h1>
+
+  <div class="summary">
+    <div><span>Product</span><strong>Filmora 14 Lifetime Premium</strong></div>
+    <div><span>License</span><strong>Lifetime • 1 PC</strong></div>
+    <div><span>Amount</span><strong>₹199</strong></div>
+  </div>
+
+  <label>Full Name *</label>
+  <input id="name" required placeholder="Your name">
+
+  <label>Email *</label>
+  <input id="email" type="email" required placeholder="you@gmail.com">
+
+  <label>Phone (optional)</label>
+  <input id="phone" placeholder="10-digit number">
+
+  <label>Notes (optional)</label>
+  <textarea id="notes" placeholder="Any special request?"></textarea>
+
+
+  <button id="checkoutBtn" class="checkout-btn" onclick="createOrder()">
+    ⚡ Pay & Unlock Now
+  </button>
+
+  <p style="text-align:center;font-size:13px;margin-top:10px;opacity:.65;">
+    🔒 100% Secure | No Subscription | Lifetime Access
+  </p>
+
+  <div class="msg" id="msg">No auto-debit. You will pay manually via UPI.</div>
+</div>
+
+<script>
+function setLoading(state) {
+  const btn = document.getElementById("checkoutBtn");
+  if (state) {
+    btn.innerHTML = "⌛ Processing...";
+    btn.classList.add("loading");
+  } else {
+    btn.innerHTML = "⚡ Pay & Unlock Now";
+    btn.classList.remove("loading");
+  }
+}
+
+async function createOrder() {
+  setLoading(true);
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const msg = document.getElementById("msg");
+
+  if (!name || !email) {
+    msg.textContent = "⚠ Please enter name and email.";
+    msg.style.color = "#ff6b6b";
+    setLoading(false);
+    return;
+  }
+
+  const res = await fetch("/api/create-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, phone })
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    localStorage.setItem("orderID", data.orderId);
+    window.location.href = "payment.html";
+  } else {
+    alert("Something went wrong!");
+    setLoading(false);
+  }
+}
+</script>
+
+</body>
+</html>

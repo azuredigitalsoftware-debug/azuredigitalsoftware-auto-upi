@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  background:#0a0f1a;
+  font-family: 'Inter', sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+
+.box {
+  background:#111b2b;
+  padding:25px;
+  border-radius:14px;
+  width:90%;
+  max-width:350px;
+  border:1px solid rgba(255,255,255,0.1);
+  text-align:center;
+}
+
+input {
+  width:100%;
+  margin-top:12px;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:#0a0f1a;
+  color:white;
+  font-size:15px;
+}
+
+.btn {
+  width:100%;
+  margin-top:16px;
+  padding:14px;
+  background:#00ffc6;
+  color:#012;
+  border:none;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.btn:hover {
+  transform:scale(1.04);
+}
+.error {
+  margin-top:12px;
+  color:#ff6b6b;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Admin Login</h2>
+  <input id="password" type="password" placeholder="Enter admin password">
+  <button class="btn" onclick="login()">Login</button>
+  <div id="msg" class="error"></div>
+</div>
+
+<script>
+const ADMIN_PASSWORD = "azuredigital2025"; // 🔐 CHANGE THIS PASSWORD
+
+function login(){
+  const pass = document.getElementById("password").value;
+
+  if(pass === ADMIN_PASSWORD){
+    localStorage.setItem("adminLoggedIn", "true");
+    window.location.href = "admin.html";
+  } else {
+    document.getElementById("msg").innerText = "❌ Incorrect password";
+  }
+}
+</script>
+
+</body>
+</html>

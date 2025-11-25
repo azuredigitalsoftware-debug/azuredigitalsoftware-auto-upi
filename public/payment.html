@@ -2,362 +2,510 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Payment | Azure Digital Software</title>
+<title>Complete Payment | Azure Digital Software</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
+*{box-sizing:border-box;margin:0;padding:0;}
 body{
   margin:0;
-  background:#0a0f1a;
-  font-family:'Inter',sans-serif;
-  color:white;
+  background:#020617;
+  color:#fff;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Inter",sans-serif;
 }
+
+/* HEADER */
 .header{
-  padding:18px;
-  font-size:18px;
-  font-weight:600;
-  background:#111b2b;
+  padding:14px 18px;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  border-bottom:1px solid #1f2937;
 }
-.secure{
+.header-title{font-weight:700;font-size:16px;}
+.header-tag{
+  padding:4px 10px;
+  border-radius:999px;
   background:#00ffc6;
-  padding:5px 10px;
-  color:#00261a;
-  border-radius:10px;
-  font-size:12px;
+  color:#022c22;
+  font-size:11px;
 }
+
+/* WRAPPER */
 .container{
-  padding:20px;
-  max-width:500px;
-  margin:auto;
+  max-width:480px;
+  margin:0 auto;
+  padding:18px 16px 90px;
 }
 
-/* Product Box */
-.box{
-  background:#121a29;
+/* ORDER CARD */
+.order-card{
+  background:#020617;
   border-radius:16px;
-  border:1px solid #00ffc633;
-  padding:16px;
-  text-align:center;
+  border:1px solid #1f2937;
+  padding:14px 14px 16px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.7);
 }
-.price{
-  font-size:30px;
-  font-weight:bold;
+.order-title{font-size:15px;font-weight:600;}
+.order-meta{font-size:12px;opacity:.7;margin-top:2px;}
+.order-price{
+  font-size:22px;
+  font-weight:800;
   color:#00ffc6;
+  margin-top:6px;
 }
+.order-id{font-size:12px;opacity:.75;margin-top:4px;}
 
-/* QR */
-.qr-box{
-  background:#121a29;
-  padding:18px;
-  margin-top:18px;
+/* QR BOX */
+.qr-card{
+  margin-top:16px;
+  background:#020617;
   border-radius:16px;
-  border:1px solid rgba(255,255,255,0.1);
+  border:1px solid #1f2937;
+  padding:14px;
   text-align:center;
 }
-.qr{
+.qr-image{
   width:210px;
-  height:auto;
-  background:white;
-  border-radius:10px;
+  max-width:70%;
+  border-radius:12px;
+  background:#fff;
   padding:8px;
+  margin:auto;
+  display:block;
+}
+.qr-note{
+  font-size:11px;
+  opacity:.7;
+  margin-top:8px;
 }
 
-/* Buttons */
-.upi-row{
+/* UPI APP BUTTONS */
+.pay-options{
+  width:100%;
+  margin-top:18px;
   display:flex;
+  flex-direction:column;
   gap:10px;
-  margin-top:14px;
 }
-.upi-btn{
-  flex:1;
-  background:#182235;
-  border:1px solid #00ffc633;
+.pay-btn{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid rgba(148,163,184,.4);
+  background:#e8e9ed;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:600;
+  transition:.25s;
+}
+.pay-btn:hover{
+  transform:scale(1.03);
+  border-color:#00ffc6;
+  box-shadow:0 0 16px rgba(0,255,198,.25);
+}
+.pay-btn img{
+  width:26px;
+  height:26px;
+  border-radius:50%;
+}
+.other-note{
+  margin-top:10px;
+  font-size:12px;
+  opacity:.7;
+}
+
+/* VERIFICATION BOX */
+.verify-box{
+  margin-top:20px;
+  background:#020617;
+  border-radius:16px;
+  border:1px solid #1f2937;
+  padding:14px;
+}
+.verify-title{
+  font-size:14px;
+  font-weight:600;
+}
+.verify-status{
+  margin-top:6px;
+  font-size:13px;
+  opacity:.85;
+}
+.verify-timer{
+  margin-top:6px;
+  font-size:13px;
+  color:#fbbf24;
+}
+.loader{
+  margin-top:10px;
+  font-size:30px;
+  text-align:center;
+  animation:pulse 1.4s infinite;
+}
+@keyframes pulse{
+  0%{opacity:.3;transform:scale(.9);}
+  50%{opacity:1;transform:scale(1.05);}
+  100%{opacity:.3;transform:scale(.9);}
+}
+
+/* ACTION BUTTONS */
+.action-row{
+  margin-top:14px;
+  display:none;
+  flex-direction:column;
+  gap:10px;
+}
+.primary-btn, .secondary-btn, .ghost-btn{
+  width:100%;
   padding:12px;
   border-radius:12px;
   font-size:14px;
+  font-weight:600;
   cursor:pointer;
-}
-
-.copy-btn{
-  width:100%;
-  padding:14px;
-  background:#00ffc6;
-  color:#002620;
-  font-weight:700;
   border:none;
-  margin-top:10px;
-  border-radius:12px;
-  cursor:pointer;
+}
+.primary-btn{
+  background:#22c55e;
+  color:#022c22;
+}
+.secondary-btn{
+  background:#0f172a;
+  color:#e5e7eb;
+  border:1px solid #374151;
+}
+.ghost-btn{
+  background:transparent;
+  color:#9ca3af;
+  border:1px dashed #4b5563;
 }
 
-/* Timer */
-.timer{
-  margin-top:18px;
-  font-size:14px;
-  text-align:center;
-  opacity:.8;
-}
-
-/* Loader */
-.loader{
-  text-align:center;
-  font-size:50px;
-  animation:pulse 1.4s infinite;
-  margin-top:20px;
-}
-@keyframes pulse{
-  0%{opacity:.2;transform:scale(0.9);}
-  50%{opacity:1;transform:scale(1.15);}
-  100%{opacity:.2;transform:scale(0.9);}
-}
-
-/* Pay Confirm */
-#paidBtn{
-  width:100%;
-  padding:14px;
-  background:#0096ff;
-  border:none;
-  border-radius:14px;
-  margin-top:14px;
-  font-size:18px;
-  font-weight:700;
-  cursor:pointer;
-  display:none;
-}
-
-/* Upload Popup */
-.popup{
+/* POPUP UPLOAD */
+.backdrop{
   position:fixed;
-  top:0;left:0;right:0;bottom:0;
+  inset:0;
   background:rgba(0,0,0,.6);
   display:none;
   justify-content:center;
   align-items:center;
+  z-index:20;
 }
-.popup-card{
+.popup{
   width:90%;
-  max-width:350px;
-  background:#121a29;
-  padding:20px;
+  max-width:360px;
+  background:#020617;
   border-radius:16px;
-  text-align:center;
-  border:1px solid #00ffc644;
+  border:1px solid #1f2937;
+  padding:16px;
 }
-.popup-card input{
-  width:100%;
-  margin-top:14px;
-}
-.submit-btn{
-  width:100%;
-  padding:14px;
-  background:#00ffc6;
-  border:none;
+.popup h3{font-size:16px;margin-bottom:6px;}
+.popup small{font-size:12px;opacity:.75;}
+.popup input[type="file"]{
   margin-top:10px;
-  border-radius:12px;
-  font-weight:700;
-}
-.cancel-btn{
   width:100%;
-  padding:14px;
-  background:#182235;
-  border:1px solid #333;
-  color:white;
-  border-radius:12px;
-  margin-top:8px;
+}
+.popup-btn{
+  margin-top:12px;
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:600;
+}
+.popup-primary{
+  background:#00ffc6;
+  color:#022c22;
+}
+.popup-cancel{
+  background:#020617;
+  border:1px solid #4b5563;
+  color:#e5e7eb;
+}
+
+/* FOOTER NOTE */
+.footer-note{
+  margin-top:14px;
+  font-size:11px;
+  opacity:.7;
+  text-align:center;
+}
+.success-text{color:#22c55e;}
+.error-text{color:#f97373;}
+
+@media(min-width:700px){
+  .container{padding-bottom:30px;}
 }
 </style>
 </head>
-
 <body>
 
 <div class="header">
-  Secure Payment
-  <span class="secure">🔒 Verified</span>
+  <div class="header-title">Complete Your Payment</div>
+  <div class="header-tag">🔒 Secure UPI</div>
 </div>
 
 <div class="container">
 
-  <div class="box">
-    <div style="opacity:.7;font-size:14px;">Filmora 14 Lifetime Access</div>
-    <div class="price">₹199</div>
-    <div style="font-size:12px;color:#00ffc6;">Order ID: <b id="orderID"></b></div>
+  <!-- ORDER SUMMARY -->
+  <div class="order-card">
+    <div class="order-title">Filmora 14 Lifetime Premium</div>
+    <div class="order-meta">1 PC • Lifetime License • Instant Email Delivery</div>
+    <div class="order-price">₹199</div>
+    <div class="order-id">Order ID: <span id="orderIdLabel"></span></div>
   </div>
 
-  <div class="qr-box">
-    <img id="qrImage" class="qr" src="" alt="Generating QR...">
-    <p style="opacity:.6;font-size:12px;">Scan with any UPI app</p>
+  <!-- QR CODE -->
+  <div class="qr-card">
+    <img id="qrImage" class="qr-image" src="" alt="UPI QR">
+    <div class="qr-note">
+      Scan with Google Pay / PhonePe / Paytm or any UPI app.  
+      Amount & details will be auto-filled.
+    </div>
   </div>
 
-<style>
-.upi-btn {
-  flex: 1;
-  background: #00ffc6;
-  border: 1px solid rgba(255,255,255,0.12);
-  padding: 12px;
-  border-radius: 14px;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: .25s;
-}
-
-.upi-btn:hover {
-  border-color: #00ffc6;
-  box-shadow: 0 0 10px rgba(0,255,198,0.4);
-  transform: translateY(-2px);
-}
-
-.upi-logo {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:2px;
-}
-.upi-logo img{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-}
-</style>
-
-
-<div class="upi-row">
-
-  <button class="upi-btn" onclick="pay()">
-    <span class="upi-logo">
+  <!-- UPI APP BUTTONS -->
+  <h3 style="margin-top:20px;font-size:15px;">Pay using UPI app</h3>
+  <div class="pay-options">
+    <button class="pay-btn" onclick="payWith('gpay')">
       <img src="uploads/google pay.webp">
-    </span>
-    Google Pay
-  </button>
-
-  <button class="upi-btn" onclick="pay()">
-    <span class="upi-logo">
+      <span>Pay with Google Pay</span>
+    </button>
+    <button class="pay-btn" onclick="payWith('phonepe')">
       <img src="uploads/OIP (2).webp">
-    </span>
-    PhonePe
-  </button>
-
-  <button class="upi-btn" onclick="pay()">
-    <span class="upi-logo">
+      <span>Pay with PhonePe</span>
+    </button>
+    <button class="pay-btn" onclick="payWith('paytm')">
       <img src="uploads/download.webp">
-    </span>
-    Paytm
-  </button>
+      <span>Pay with Paytm</span>
+    </button>
+    <button class="pay-btn" onclick="payWith('upi')">
+      <img src="https://img.icons8.com/fluency/48/qr-code.png">
+      <span>Other UPI apps</span>
+    </button>
+  </div>
+  <div class="other-note">
+    After completing payment in your UPI app, come back to this page for verification.
+  </div>
+
+  <!-- VERIFICATION BOX -->
+  <div class="verify-box" id="verifyBox">
+    <div class="verify-title" id="verifyTitle">Waiting for payment…</div>
+    <div class="verify-status" id="verifyStatus">
+      Please complete the UPI payment in your selected app.  
+      Once done, we’ll verify and unlock your download.
+    </div>
+    <div class="verify-timer" id="verifyTimer">We’ll auto-check in a few seconds…</div>
+    <div class="loader" id="loaderIcon">🚀</div>
+
+    <div class="action-row" id="actionRow">
+      <button class="primary-btn" onclick="openUpload()">✔ I HAVE PAID</button>
+      <button class="secondary-btn" onclick="openUpload()">📤 Upload payment screenshot</button>
+    </div>
+  </div>
+
+  <div class="footer-note" id="footerNote">
+    If your payment is approved, you will be automatically redirected to the success page.  
+    If not, our team will verify it manually within a few minutes.
+  </div>
 
 </div>
 
-<p style="text-align:center;opacity:.6;font-size:12px;margin-top:8px;">
-⚡ Works with ANY UPI app — just tap to pay
-</p>
-
-
-  <button class="copy-btn" onclick="copyUPI()">📋 Copy UPI ID: azuredigitalsoftware@nsdl</button>
-
-  <div class="timer" id="timer">⏳ Waiting for Payment (30s)...</div>
-
-  <div id="statusIcon" class="loader">🚀</div>
-
-  <button id="paidBtn" onclick="openUpload()">I HAVE PAID</button>
-
-</div>
-
-<!-- Upload Screenshot -->
-<div id="uploadPopup" class="popup">
-  <div class="popup-card">
-    <h3>📸 Upload Payment Screenshot</h3>
-    <input type="file" id="proof" accept="image/*">
-    <button class="submit-btn" onclick="submitProof()">Submit</button>
-    <button class="cancel-btn" onclick="closePopup()">Cancel</button>
+<!-- POPUP FOR UPLOAD -->
+<div class="backdrop" id="uploadBackdrop">
+  <div class="popup">
+    <h3>Upload UPI Payment Screenshot</h3>
+    <small>Make sure the Transaction ID, Amount and Name is visible.</small>
+    <input type="file" id="proofFile" accept="image/*">
+    <button class="popup-btn popup-primary" onclick="submitProof()">Submit Screenshot</button>
+    <button class="popup-btn popup-cancel" onclick="closePopup()">Cancel</button>
+    <div id="uploadMsg" style="margin-top:6px;font-size:12px;"></div>
   </div>
 </div>
 
 <script>
-let orderID = localStorage.getItem("orderID");
-if(!orderID) location.href="checkout.html";
-document.getElementById("orderID").textContent = orderID;
+/* ---------- CONFIG ---------- */
+const upiID = "azuredigitalsoftware@nsdl";            // your UPI ID
+const receiverName = "Azure Digital Software";       // your display name
+const amount = "199";                                // amount in INR
 
-// Auto QR
-const upiId = "azuredigitalsoftware@nsdl";
-const name = "Azure Digital";
-const amt = "199";
-const note = "Filmora Purchase";
+let lastPaymentLink = "";                            // remember last UPI link
+let orderId = localStorage.getItem("orderID");       // from checkout.php
 
-const upiURL = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amt}&tn=${encodeURIComponent(note)}`;
-document.getElementById("qrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiURL)}`;
+if(!orderId){
+  // if no order id, send back to checkout
+  window.location.href = "checkout.php";
+}
 
-function pay(){ window.location.href = upiURL; }
-function copyUPI(){ navigator.clipboard.writeText(upiId); alert("Copied"); }
+document.getElementById("orderIdLabel").innerText = orderId;
 
-// Timer → Show Upload Button
-let sec=30;
-const timer=setInterval(()=>{
-  sec--;
-  document.getElementById("timer").innerText=`⏳ Waiting for Payment (${sec}s)...`;
+/* ---------- GENERATE UPI & QR ---------- */
+function baseUPILink(){
+  return `upi://pay?pa=${upiID}&pn=${encodeURIComponent(receiverName)}&am=${amount}&cu=INR&tn=Order%20${orderId}&tr=${orderId}`;
+}
 
-  if(sec===0){
-    clearInterval(timer);
-    document.getElementById("timer").innerText="✔ Payment Window Ready";
-    document.getElementById("paidBtn").style.display="block";
-    document.getElementById("statusIcon").innerHTML="🔍";
+function generateQR(){
+  const link = baseUPILink();
+  document.getElementById("qrImage").src =
+    "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(link);
+}
+generateQR();
+
+/* ---------- UPI APP HANDLERS ---------- */
+function payWith(app){
+  let link = baseUPILink();
+
+  if(app === "gpay"){
+    link = `gpay://upi/pay?pa=${upiID}&pn=${encodeURIComponent(receiverName)}&am=${amount}&cu=INR&tr=${orderId}`;
+  } else if(app === "phonepe"){
+    link = `phonepe://pay?pa=${upiID}&pn=${encodeURIComponent(receiverName)}&am=${amount}&cu=INR&tr=${orderId}`;
+  } else if(app === "paytm"){
+    link = `paytmmp://pay?pa=${upiID}&pn=${encodeURIComponent(receiverName)}&am=${amount}&cu=INR&tr=${orderId}`;
   }
-},1000);
 
-// Upload Proof
-function openUpload(){ document.getElementById("uploadPopup").style.display="flex"; }
-function closePopup(){ document.getElementById("uploadPopup").style.display="none"; }
+  lastPaymentLink = link;
+  startVerificationFlow();
+  window.location.href = link;
+}
 
+function reopenUPI(){
+  if(lastPaymentLink){
+    window.location.href = lastPaymentLink;
+  } else {
+    window.location.href = baseUPILink();
+  }
+}
+
+/* ---------- HYBRID VERIFICATION FLOW (12s) ---------- */
+let verifyTimerId = null;
+function startVerificationFlow(){
+  const title = document.getElementById("verifyTitle");
+  const status = document.getElementById("verifyStatus");
+  const timer = document.getElementById("verifyTimer");
+  const loader = document.getElementById("loaderIcon");
+  const actions = document.getElementById("actionRow");
+
+  title.innerText = "Verifying payment…";
+  status.innerText = "Please don’t close this page. If your payment is successful, we’ll confirm it shortly.";
+  let sec = 12;
+  timer.innerText = `Checking with bank… ${sec}s`;
+  loader.innerText = "🔄";
+  actions.style.display = "none";
+
+  if(verifyTimerId) clearInterval(verifyTimerId);
+  verifyTimerId = setInterval(()=>{
+    sec--;
+    timer.innerText = `Checking with bank… ${sec}s`;
+    if(sec <= 0){
+      clearInterval(verifyTimerId);
+      title.innerText = "Almost there — we just need your confirmation";
+      status.innerText = "If you’ve completed the payment, please upload the screenshot so we can verify faster.";
+      timer.innerText = "Tap “Upload payment screenshot” to continue.";
+      loader.innerText = "✅";
+      actions.style.display = "flex";
+    }
+  },1000);
+}
+
+/* ---------- UPLOAD POPUP ---------- */
+function openUpload(){
+  document.getElementById("uploadBackdrop").style.display = "flex";
+}
+function closePopup(){
+  document.getElementById("uploadBackdrop").style.display = "none";
+}
+
+/* ---------- SUBMIT PROOF ---------- */
 async function submitProof(){
-  const file=document.getElementById("proof").files[0];
-  if(!file) return alert("Upload proof first!");
+  const fileInput = document.getElementById("proofFile");
+  const msg = document.getElementById("uploadMsg");
+  msg.innerText = "";
+  msg.className = "";
 
-  const formData=new FormData();
-  formData.append("orderId",orderID);
-  formData.append("screenshot",file);
+  if(!fileInput.files[0]){
+    msg.innerText = "Please select a screenshot file.";
+    msg.className = "error-text";
+    return;
+  }
 
-  const res=await fetch("/api/upload-proof",{method:"POST",body:formData});
-  const data=await res.json();
+  const fd = new FormData();
+  fd.append("orderId", orderId);
+  fd.append("screenshot", fileInput.files[0]);
 
-  closePopup();
-  document.getElementById("timer").innerText="⏳ Verifying Payment...";
-  startPolling();
+  try{
+    const res = await fetch("/api/upload_proof.php", {
+      method:"POST",
+      body: fd
+    });
+    const data = await res.json();
+
+    if(data.success){
+      msg.innerText = "Screenshot uploaded. Verifying your payment…";
+      msg.className = "success-text";
+      closePopup();
+      document.getElementById("verifyTitle").innerText = "Payment proof received";
+      document.getElementById("verifyStatus").innerText = "We’re verifying your payment. This usually takes a few minutes.";
+      document.getElementById("verifyTimer").innerText = "You’ll be redirected automatically when approved.";
+      document.getElementById("loaderIcon").innerText = "🔍";
+      startPollingStatus();
+    } else {
+      msg.innerText = "Upload failed: " + (data.message || "Try again");
+      msg.className = "error-text";
+    }
+  }catch(e){
+    msg.innerText = "Network error. Please try again.";
+    msg.className = "error-text";
+  }
 }
 
-// Live Polling
-function startPolling(){
-  const poll=setInterval(async()=>{
-    const res=await fetch(`/api/order-status/${orderID}`);
-    const data=await res.json();
-
-    if(data.status==="approved"){
-      clearInterval(poll);
-      document.getElementById("statusIcon").innerText="🎉";
-      document.getElementById("timer").innerText="Payment Verified!";
-      setTimeout(()=>location.href="success.html",2000);
-    }
-
-    if(data.status==="rejected"){
-      clearInterval(poll);
-      document.getElementById("statusIcon").innerText="⚠️";
-      document.getElementById("timer").innerText="❌ Payment Rejected. Contact Support.";
-    }
-
-  },3000);
+/* ---------- POLL ORDER STATUS ---------- */
+let pollInterval = null;
+function startPollingStatus(){
+  if(pollInterval) clearInterval(pollInterval);
+  pollInterval = setInterval(checkStatus, 4000);
 }
+
+async function checkStatus(){
+  try{
+    const res = await fetch("/api/order_status.php?orderId="+encodeURIComponent(orderId));
+    const data = await res.json();
+
+    if(!data.status) return;
+
+    const title = document.getElementById("verifyTitle");
+    const status = document.getElementById("verifyStatus");
+    const timer = document.getElementById("verifyTimer");
+    const loader = document.getElementById("loaderIcon");
+    const footer = document.getElementById("footerNote");
+
+    if(data.status === "approved"){
+      clearInterval(pollInterval);
+      title.innerText = "Payment Approved 🎉";
+      status.innerText = "Your payment has been verified. We’re redirecting you to your download page.";
+      timer.innerText = "";
+      loader.innerText = "🎉";
+      footer.className = "footer-note success-text";
+      footer.innerText = "Payment successful. Redirecting…";
+      setTimeout(()=>{ window.location.href = "success.php"; }, 2500);
+    } else if(data.status === "rejected"){
+      clearInterval(pollInterval);
+      title.innerText = "Payment Could Not Be Verified";
+      status.innerText = "Your payment could not be confirmed automatically. Please contact support or try again.";
+      timer.innerText = "";
+      loader.innerText = "⚠️";
+      footer.className = "footer-note error-text";
+      footer.innerText = "If money was deducted but status is rejected, please contact support with your UPI reference ID.";
+    }
+  }catch(e){
+    // silent fail; will retry
+  }
+}
+
+// Start verification flow once page loads (soft mode)
+startVerificationFlow();
 </script>
 
 </body>
 </html>
-
-
-
-

@@ -336,7 +336,7 @@ let orderId = localStorage.getItem("orderID");       // from checkout.php
 
 if(!orderId){
   // if no order id, send back to checkout
-  window.location.href = "checkout.php";
+  window.location.href = "checkout.html";
 }
 
 document.getElementById("orderIdLabel").innerText = orderId;
@@ -435,7 +435,7 @@ async function submitProof(){
   fd.append("screenshot", fileInput.files[0]);
 
   try{
-    const res = await fetch("/api/upload_proof.php", {
+    const res = await fetch("/api/upload-proof", {
       method:"POST",
       body: fd
     });
@@ -469,7 +469,7 @@ function startPollingStatus(){
 
 async function checkStatus(){
   try{
-    const res = await fetch("/api/order_status.php?orderId="+encodeURIComponent(orderId));
+    const res = await fetch(`/api/order-status/${encodeURIComponent(orderId)}`);
     const data = await res.json();
 
     if(!data.status) return;
@@ -488,7 +488,7 @@ async function checkStatus(){
       loader.innerText = "🎉";
       footer.className = "footer-note success-text";
       footer.innerText = "Payment successful. Redirecting…";
-      setTimeout(()=>{ window.location.href = "success.php"; }, 2500);
+      setTimeout(()=>{ window.location.href = "success.html"; }, 2500);
     } else if(data.status === "rejected"){
       clearInterval(pollInterval);
       title.innerText = "Payment Could Not Be Verified";

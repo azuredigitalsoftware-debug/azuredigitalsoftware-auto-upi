@@ -2,381 +2,509 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Filmora 14 Lifetime Premium | Azure Digital Store</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Filmora 14 Lifetime Premium — one-time purchase, no renewal. Instant delivery and activation guide included.">
-<meta name="theme-color" content="#050508">
+<title>Complete Payment | Azure Digital Software</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  margin:0;
+  background:#020617;
+  color:#fff;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Inter",sans-serif;
+}
 
-<!-- Font -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+/* HEADER */
+.header{
+  padding:14px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #1f2937;
+}
+.header-title{font-weight:700;font-size:16px;}
+.header-tag{
+  padding:4px 10px;
+  border-radius:999px;
+  background:#00ffc6;
+  color:#022c22;
+  font-size:11px;
+}
 
-  <!-- load critical css non-blocking -->
-  <link rel="preload" href="styles.min.css" as="style" onload="this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="styles.min.css"></noscript>
-  <style>
-  /* FAQ slider styles */
-  #faq { margin-top:24px; padding:18px; border-radius:12px; background:#071018; border:1px solid rgba(255,255,255,0.03); color:#e6eef0; }
-  .faq-item { padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.03); }
-  .faq-q { width:100%; background:transparent; border:none; color:inherit; text-align:left; font-size:15px; font-weight:700; display:flex; justify-content:space-between; align-items:center; padding:6px 0; cursor:pointer; }
-  .faq-a { max-height:0; overflow:hidden; transition:max-height .36s cubic-bezier(.2,.9,.2,1), opacity .28s ease; opacity:0; padding-right:6px; }
-  .faq-item.open .faq-a { opacity:1; padding-top:8px; }
-  .faq-toggle { background:#071826; border-radius:8px; width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; color:#00ffc6; font-weight:700; margin-left:12px; transition:transform .25s ease; }
-  .faq-item.open .faq-toggle { transform:rotate(45deg); }
-  @media (min-width:700px){ #faq{ padding:22px; } }
-  </style>
+/* WRAPPER */
+.container{
+  max-width:480px;
+  margin:0 auto;
+  padding:18px 16px 90px;
+}
+
+/* ORDER CARD */
+.order-card{
+  background:#020617;
+  border-radius:16px;
+  border:1px solid #1f2937;
+  padding:14px 14px 16px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.7);
+}
+.order-title{font-size:15px;font-weight:600;}
+.order-meta{font-size:12px;opacity:.7;margin-top:2px;}
+.order-price{
+  font-size:22px;
+  font-weight:800;
+  color:#00ffc6;
+  margin-top:6px;
+}
+.order-id{font-size:12px;opacity:.75;margin-top:4px;}
+
+/* QR BOX */
+.qr-card{
+  margin-top:16px;
+  background:#020617;
+  border-radius:16px;
+  border:1px solid #1f2937;
+  padding:14px;
+  text-align:center;
+}
+.qr-image{
+  width:210px;
+  max-width:70%;
+  border-radius:12px;
+  background:#fff;
+  padding:8px;
+  margin:auto;
+  display:block;
+}
+.qr-note{
+  font-size:11px;
+  opacity:.7;
+  margin-top:8px;
+}
+
+/* UPI APP BUTTONS */
+.pay-options{
+  width:100%;
+  margin-top:18px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.pay-btn{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid rgba(148,163,184,.4);
+  background:#e8e9ed;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:600;
+  transition:.25s;
+}
+.pay-btn:hover{
+  transform:scale(1.03);
+  border-color:#00ffc6;
+  box-shadow:0 0 16px rgba(0,255,198,.25);
+}
+.pay-btn img{
+  width:26px;
+  height:26px;
+  border-radius:50%;
+}
+.other-note{
+  margin-top:10px;
+  font-size:12px;
+  opacity:.7;
+}
+
+/* VERIFICATION BOX */
+.verify-box{
+  margin-top:20px;
+  background:#020617;
+  border-radius:16px;
+  border:1px solid #1f2937;
+  padding:14px;
+}
+.verify-title{
+  font-size:14px;
+  font-weight:600;
+}
+.verify-status{
+  margin-top:6px;
+  font-size:13px;
+  opacity:.85;
+}
+.verify-timer{
+  margin-top:6px;
+  font-size:13px;
+  color:#fbbf24;
+}
+.loader{
+  margin-top:10px;
+  font-size:30px;
+  text-align:center;
+  animation:pulse 1.4s infinite;
+}
+@keyframes pulse{
+  0%{opacity:.3;transform:scale(.9);}
+  50%{opacity:1;transform:scale(1.05);}
+  100%{opacity:.3;transform:scale(.9);}
+}
+
+/* ACTION BUTTONS */
+.action-row{
+  margin-top:14px;
+  display:none;
+  flex-direction:column;
+  gap:10px;
+}
+.primary-btn, .secondary-btn, .ghost-btn{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  border:none;
+}
+.primary-btn{
+  background:#22c55e;
+  color:#022c22;
+}
+.secondary-btn{
+  background:#0f172a;
+  color:#e5e7eb;
+  border:1px solid #374151;
+}
+.ghost-btn{
+  background:transparent;
+  color:#9ca3af;
+  border:1px dashed #4b5563;
+}
+
+/* POPUP UPLOAD */
+.backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:20;
+}
+.popup{
+  width:90%;
+  max-width:360px;
+  background:#020617;
+  border-radius:16px;
+  border:1px solid #1f2937;
+  padding:16px;
+}
+.popup h3{font-size:16px;margin-bottom:6px;}
+.popup small{font-size:12px;opacity:.75;}
+.popup input[type="file"]{
+  margin-top:10px;
+  width:100%;
+}
+.popup-btn{
+  margin-top:12px;
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:600;
+}
+.popup-primary{
+  background:#00ffc6;
+  color:#022c22;
+}
+.popup-cancel{
+  background:#020617;
+  border:1px solid #4b5563;
+  color:#e5e7eb;
+}
+
+/* FOOTER NOTE */
+.footer-note{
+  margin-top:14px;
+  font-size:11px;
+  opacity:.7;
+  text-align:center;
+}
+.success-text{color:#22c55e;}
+.error-text{color:#f97373;}
+
+@media(min-width:700px){
+  .container{padding-bottom:30px;}
+}
+</style>
 </head>
-
 <body>
+
+<div class="header">
+  <div class="header-title">Complete Your Payment</div>
+  <div class="header-tag">🔒 Secure UPI</div>
+</div>
+
 <div class="container">
 
-<header>
-  <h1>AZURE DIGITAL SOFTWARE</h1>
-</header>
-
-<img src="optimized-uploads/filmora ads 1.png" alt="Filmora 14 product banner" class="product-img" loading="lazy" decoding="async">
-
-<!-- decorative sparkles behind price -->
-<div class="sparkle" aria-hidden="true"></div>
-
-<h2 class="product-name">Filmora 14 Lifetime Premium (PC & Android) | Free Capcut Pro|</h2>
-
-<div class="price-card" role="region" aria-label="Pricing">
-  <div class="ribbon" aria-hidden="true">BEST VALUE</div>
-  <div class="price-left">
-    <div class="new">₹199</div>
-    <div class="old">₹999</div>
-  </div>
-  <div class="price-right">
-    <div class="discount-badge" aria-hidden="true">-80%</div>
-    <div class="save-text">You save ₹800</div>
-    <div style="margin-top:8px;"> <span class="badge">Limited Time Offer</span></div>
-  </div>
-</div>
-
-
-<ul class="features">
-  <li>Lifetime Activation – No Renewal</li>
-  <li>Premium Export – No Watermark</li>
-  <li>Activation Guide Included</li>
-  <li>Trusted by 10,000+ Users</li>
-</ul>
-
-<!-- ⭐ EDIT THIS LINK FOR ACTION (WhatsApp, Checkout, Payment, etc.) -->
-<button class="buy-btn" onclick="location.href='checkout.html'" aria-label="Buy Filmora 14 Lifetime Premium">🔥 Buy Now — Limited Offer</button>
-
-<div class="timer-box">
-⏳ Offer ends in: <span id="timer" aria-live="polite">05:00</span>
-</div>
-
-
-<!-- in-body styles moved to head for faster first paint -->
-
-
-<!-- ⭐ Visual Value Strip -->
-<div class="value-strip">
-🔥 Most popular editing software — Trusted by 1M+ creators
-</div>
-
-<!-- ⭐ Visual Feature Grid -->
-<div class="features-grid">
-
-  <div class="feature-box">
-    <div class="feature-icon">🎬</div>
-    <div>Professional Editing</div>
+  <!-- ORDER SUMMARY -->
+  <div class="order-card">
+    <div class="order-title">Filmora 14 Lifetime Premium</div>
+    <div class="order-meta">1 PC • Lifetime License • Instant Email Delivery</div>
+    <div class="order-price">₹199</div>
+    <div class="order-id">Order ID: <span id="orderIdLabel"></span></div>
   </div>
 
-  <div class="feature-box">
-    <div class="feature-icon">⚡</div>
-    <div>Fast Rendering</div>
+  <!-- QR CODE -->
+  <div class="qr-card">
+    <img id="qrImage" class="qr-image" src="" alt="UPI QR">
+    <div class="qr-note">
+      Scan with Google Pay / PhonePe / Paytm or any UPI app.  
+      Amount & details will be auto-filled.
+    </div>
   </div>
 
-  <div class="feature-box">
-    <div class="feature-icon">✨</div>
-    <div>2000+ Effects</div>
+  <!-- UPI APP BUTTONS -->
+  <h3 style="margin-top:20px;font-size:15px;">Pay using UPI app</h3>
+  <div class="pay-options">
+    <button class="pay-btn" onclick="payWith('gpay')">
+      <img src="uploads/google pay.webp">
+      <span>Pay with Google Pay</span>
+    </button>
+    <button class="pay-btn" onclick="payWith('phonepe')">
+      <img src="uploads/OIP (2).webp">
+      <span>Pay with PhonePe</span>
+    </button>
+    <button class="pay-btn" onclick="payWith('paytm')">
+      <img src="uploads/download.webp">
+      <span>Pay with Paytm</span>
+    </button>
+    <button class="pay-btn" onclick="payWith('upi')">
+      <img src="https://img.icons8.com/fluency/48/qr-code.png">
+      <span>Other UPI apps</span>
+    </button>
+  </div>
+  <div class="other-note">
+    After completing payment in your UPI app, come back to this page for verification.
   </div>
 
-  <div class="feature-box">
-    <div class="feature-icon">🔓</div>
-    <div>Lifetime Unlock</div>
+  <!-- VERIFICATION BOX -->
+  <div class="verify-box" id="verifyBox">
+    <div class="verify-title" id="verifyTitle">Waiting for payment…</div>
+    <div class="verify-status" id="verifyStatus">
+      Please complete the UPI payment in your selected app.  
+      Once done, we’ll verify and unlock your download.
+    </div>
+    <div class="verify-timer" id="verifyTimer">We’ll auto-check in a few seconds…</div>
+    <div class="loader" id="loaderIcon">🚀</div>
+
+    <div class="action-row" id="actionRow">
+      <button class="primary-btn" onclick="openUpload()">✔ I HAVE PAID</button>
+      <button class="secondary-btn" onclick="openUpload()">📤 Upload payment screenshot</button>
+    </div>
+  </div>
+
+  <div class="footer-note" id="footerNote">
+    If your payment is approved, you will be automatically redirected to the success page.  
+    If not, our team will verify it manually within a few minutes.
   </div>
 
 </div>
 
-<h2 class="spaced-h2">📊 Compare Before Buying</h2>
-
-<div class="table-wrap">
-<table class="compare-table">
-  <tr>
-    <th>Feature</th>
-    <th>Filmora 14</th>
-    <th>Free Editors</th>
-    <th>Adobe Premiere</th>
-  </tr>
-  <tr>
-    <td>No Watermark</td>
-    <td>✅ Yes</td>
-    <td>❌ No</td>
-    <td>✅ Yes</td>
-  </tr>
-  <tr>
-    <td>Lifetime Access</td>
-    <td>🔥 YES</td>
-    <td>❌ No</td>
-    <td>❌ Monthly Fees</td>
-  </tr>
-
-  <tr>
-    <td>Price</td>
-    <td>₹199</td>
-    <td>Free (Limited)</td>
-    <td>₹2,000+/month</td>
-  </tr>
-  </table>
-</div>
-
-
-<!-- ⭐ Trust + Purchase Psychology -->
-<div class="trust-row">
-  <div><span class="check">✔</span> No subscriptions</div>
-  <div><span class="check">✔</span> No watermark</div>
-  <div><span class="check">✔</span> Instant delivery</div>
-</div>
-
-<!-- ⭐ Benefits Highlight -->
-<div class="highlight-box">
-✨ Start creating videos you're proud of — Whether you're a beginner or advanced editor, <b>Filmora 14 makes editing fast, powerful, and FUN.</b><br><br>
-Thousands of creators switched from expensive subscriptions...  
-and now never look back.
-</div>
-
-<!-- ⭐ Micro Trust Badges -->
-<div class="badges-row">
-  <div class="badge-tag">📦 Lifetime Access</div>
-  <div class="badge-tag">💳 Secure Purchase</div>
-  <div class="badge-tag">⚙ Works on Any PC</div>
-  <div class="badge-tag">📩 Email Delivery</div>
-</div>
-
-<p class="lead">
-
-🎬 <b>Filmora 14 Lifetime Premium</b> gives you the power of professional editing without the complexity.  
-Whether you're creating reels, YouTube videos, client projects, or personal memories — Filmora makes everything <b>fast, simple, and visually stunning.</b>
-
-<br><br>
-
-🔥 With the <b>Lifetime Activation</b>, you’ll never worry about subscriptions, renewals, or hidden payment traps again.  
-Just install once → activate → use forever.
-
-<br><br>
-
-🚀 <b>Why professionals choose this?</b><br>
-✔ Zero Watermark  
-✔ AI Editing Tools  
-✔ Ultra Smooth Rendering  
-✔ 2000+ Effects, Transitions & Presets  
-✔ Drag-and-Drop Simplicity  
-✔ Works on Any PC (No high specs needed)
-
-<br><br>
-
-💡 And here's the truth:  
-Most people <b>delay editing because the software feels confusing or expensive.</b>  
-But with Filmora 14 Lifetime — editing becomes <b>fun, effortless, and unlimited.</b>
-
-<br><br>
-
-💰 Normal Price: <span style="text-decoration: line-through; color:#f87171;">₹999</span>  
-⚡ <b style="color:#00ffc6; font-size:18px;">Today Only: ₹199</b>
-
-<br><br>
-
-⏳ <span style="color:#fbbf24;">Offer valid for a limited number of activations.</span> Once the slot closes, the price returns to normal.
-
-<br><br>
-
-📩 Instant delivery after payment verification.  
-You’ll receive:  
-➡ Full Installer  
-➡ Lifetime Activation Key  
-➡ Step-by-Step Setup Guide  
-➡ Dedicated Support
-
-<br><br>
-
-🔐 <i>Secure purchase — no auto-deductions, no recurring fees, no risk.</i>
-
-<br><br>
-
-<b style="color:#00ffc6; font-size:17px;">Start creating videos you're proud of — the world is waiting for your story. 📽✨</b>
-
-</p>
-
-
-
-<p class="note"></p>
-
-<!-- FAQ: Most Asked Questions for Digital Product (slider/accordion) -->
-<section id="faq">
-  <h2 style="margin:0 0 8px;font-size:18px;">Most Asked Questions — Digital Product</h2>
-
-  <div class="faq-item">
-    <button class="faq-q">How will I receive the product after payment?<span class="faq-toggle">+</span></button>
-    <div class="faq-a">Instant email delivery — you'll get a secure download link, an activation key (if required) and a short step‑by‑step activation guide within seconds.</div>
+<!-- POPUP FOR UPLOAD -->
+<div class="backdrop" id="uploadBackdrop">
+  <div class="popup">
+    <h3>Upload UPI Payment Screenshot</h3>
+    <small>Make sure the Transaction ID, Amount and Name is visible.</small>
+    <input type="file" id="proofFile" accept="image/*">
+    <button class="popup-btn popup-primary" onclick="submitProof()">Submit Screenshot</button>
+    <button class="popup-btn popup-cancel" onclick="closePopup()">Cancel</button>
+    <div id="uploadMsg" style="margin-top:6px;font-size:12px;"></div>
   </div>
-
-  <div class="faq-item">
-    <button class="faq-q">Is this a lifetime license or subscription?<span class="faq-toggle">+</span></button>
-    <div class="faq-a">Lifetime license — one payment, no recurring fees. We include activation instructions and free setup help if you need it.</div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-q">Will it work on my PC or phone?<span class="faq-toggle">+</span></button>
-    <div class="faq-a">The product page notes supported platforms. Most purchases include installers for Windows (PC) and Android where applicable — compatibility details are in the activation guide.</div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-q">What if I can't activate or need help?<span class="faq-toggle">+</span></button>
-    <div class="faq-a">Reply to your receipt email or contact support from the site — we provide a clear activation guide and will help remotely if needed.</div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-q">Do you offer refunds?<span class="faq-toggle">+</span></button>
-    <div class="faq-a">Refunds are handled case‑by‑case. If you encounter a delivery or activation issue, contact us and we'll assist quickly — most problems are resolved without needing a refund.</div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-q">Is the download safe and malware-free?<span class="faq-toggle">+</span></button>
-    <div class="faq-a">Yes — all installers are the official files or repackaged only to include activation steps. We never include unknown binaries; scan with your antivirus if you like.</div>
-  </div>
-
-  <div style="margin-top:8px;font-size:13px;opacity:0.95;">Still have a question? Use the site contact form or reply to the order email and we’ll respond within a few hours.</div>
-</section>
-
-<footer>
-  © <span id="year"></span> Azure Digital Software — All Rights Reserved.
-</footer>
-
 </div>
 
 <script>
-(function(){
-  'use strict';
-  // Update footer year
-  const yearEl = document.getElementById('year'); if(yearEl) yearEl.textContent = new Date().getFullYear();
+/* ---------- CONFIG ---------- */
+const upiID = "6261464442@okbizaxis";            // your UPI ID
+const receiverName = "Azure Digital Software";       // your display name
+const amount = "199";                                // amount in INR
 
-  // Dynamic pricing (compute savings and percent)
-  (function(){
-    try{
-      const parseRupee = txt => { if(!txt) return NaN; const n = String(txt).replace(/[^0-9.]/g,''); return parseFloat(n)||NaN; };
-      const cards = document.querySelectorAll('.price-card');
-      cards.forEach(card=>{
-        const newEl = card.querySelector('.new');
-        const oldEl = card.querySelector('.old');
-        const badgeEl = card.querySelector('.discount-badge');
-        const saveEl = card.querySelector('.save-text');
-        if(!newEl || !oldEl) return;
-        const n = parseRupee(newEl.textContent);
-        const o = parseRupee(oldEl.textContent);
-        if(isNaN(n) || isNaN(o) || o<=0) return;
-        const savings = Math.round(o - n);
-        const pct = Math.round((1 - (n/o))*100);
-        if(badgeEl) badgeEl.textContent = (pct>0?'-'+pct+'%':'');
-        if(saveEl) saveEl.textContent = 'You save ₹'+savings;
-      });
-    }catch(e){/* ignore */}
-  })();
+let lastPaymentLink = "";                            // remember last UPI link
+let orderId = localStorage.getItem("orderID");       // from checkout.php
 
-  // Countdown timer: parse mm:ss or default 05:00
-  (function(){
-    const timerEl = document.getElementById('timer');
-    if(!timerEl) return;
-    function parseToSeconds(text){
-      if(!text) return NaN;
-      const m = String(text).match(/(\d{1,2}):(\d{2})/);
-      if(m){ const mm = parseInt(m[1],10); const ss = parseInt(m[2],10); if(!isNaN(mm) && !isNaN(ss)) return mm*60+ss; }
-      const asNum = parseInt(String(text).replace(/[^0-9]/g,''),10);
-      return isNaN(asNum)?NaN:asNum;
+if(!orderId){
+  // if no order id, send back to checkout
+  window.location.href = "checkout.html";
+}
+
+document.getElementById("orderIdLabel").innerText = orderId;
+
+/* ---------- GENERATE UPI & QR ---------- */
+function baseUPILink(){
+  return `upi://pay?pa=${upiID}&pn=${encodeURIComponent(receiverName)}&am=${amount}&cu=INR&tn=Order%20${orderId}&tr=${orderId}`;
+}
+
+function generateQR(){
+  const link = baseUPILink();
+  document.getElementById("qrImage").src =
+    "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(link);
+}
+generateQR();
+
+/* ---------- UPI APP HANDLERS ---------- */
+function payWith(app){
+  let link = baseUPILink();
+
+  if(app === "gpay"){
+    link = `gpay://upi/pay?pa=${upiID}&pn=${encodeURIComponent(receiverName)}&am=${amount}&cu=INR&tr=${orderId}`;
+  } else if(app === "phonepe"){
+    link = `phonepe://pay?pa=${upiID}&pn=${encodeURIComponent(receiverName)}&am=${amount}&cu=INR&tr=${orderId}`;
+  } else if(app === "paytm"){
+    link = `paytmmp://pay?pa=${upiID}&pn=${encodeURIComponent(receiverName)}&am=${amount}&cu=INR&tr=${orderId}`;
+  }
+
+  lastPaymentLink = link;
+  startVerificationFlow();
+  window.location.href = link;
+}
+
+function reopenUPI(){
+  if(lastPaymentLink){
+    window.location.href = lastPaymentLink;
+  } else {
+    window.location.href = baseUPILink();
+  }
+}
+
+/* ---------- HYBRID VERIFICATION FLOW (12s) ---------- */
+let verifyTimerId = null;
+function startVerificationFlow(){
+  const title = document.getElementById("verifyTitle");
+  const status = document.getElementById("verifyStatus");
+  const timer = document.getElementById("verifyTimer");
+  const loader = document.getElementById("loaderIcon");
+  const actions = document.getElementById("actionRow");
+
+  title.innerText = "Verifying payment…";
+  status.innerText = "Please don’t close this page. If your payment is successful, we’ll confirm it shortly.";
+  let sec = 12;
+  timer.innerText = `Checking with bank… ${sec}s`;
+  loader.innerText = "🔄";
+  actions.style.display = "none";
+
+  if(verifyTimerId) clearInterval(verifyTimerId);
+  verifyTimerId = setInterval(()=>{
+    sec--;
+    timer.innerText = `Checking with bank… ${sec}s`;
+    if(sec <= 0){
+      clearInterval(verifyTimerId);
+      title.innerText = "Almost there — we just need your confirmation";
+      status.innerText = "If you’ve completed the payment, please upload the screenshot so we can verify faster.";
+      timer.innerText = "Tap “Upload payment screenshot” to continue.";
+      loader.innerText = "✅";
+      actions.style.display = "flex";
     }
-    let seconds = parseToSeconds(timerEl.textContent);
-    if(isNaN(seconds) || seconds<=0) seconds = 5*60;
-    function render(sec){ timerEl.textContent = String(Math.floor(sec/60)).padStart(2,'0') + ':' + String(sec%60).padStart(2,'0'); }
-    render(seconds);
-    const iv = setInterval(()=>{ seconds = Math.max(0, seconds-1); render(seconds); if(seconds<=0) clearInterval(iv); }, 1000);
-  })();
+  },1000);
+}
 
-    // On-load visual effect: one-time confetti + buy button pulse
-    document.addEventListener('DOMContentLoaded', ()=>{
-      try{
-        const colors = ['#FFC107','#FF4D4D','#00FFC6','#0096FF','#FF7A59'];
-        const pieces = 12;
-        for(let i=0;i<pieces;i++){
-          const el = document.createElement('div');
-          el.className = 'confetti-piece';
-          el.style.background = colors[i%colors.length];
-          el.style.left = (20 + Math.random()*60) + '%';
-          el.style.top = (5 + Math.random()*10) + '%';
-          document.body.appendChild(el);
-          const dx = (Math.random()*300)-150;
-          const dur = 800 + Math.random()*700;
-          el.animate([
-            { transform: 'translate3d(0,0,0) rotate(0deg)', opacity: 1 },
-            { transform: `translate3d(${dx}px,${400+Math.random()*200}px,0) rotate(${Math.random()*720}deg)`, opacity: 0 }
-          ], { duration: dur, easing: 'cubic-bezier(.2,.8,.2,1)', iterations: 1 });
-          setTimeout(()=> el.remove(), dur + 300);
-        }
-      }catch(e){}
-      // pulse buy button briefly
-      const buy = document.querySelector('.buy-btn');
-      if(buy){ buy.classList.add('pulse'); setTimeout(()=>buy.classList.remove('pulse'),1200); }
+/* ---------- UPLOAD POPUP ---------- */
+function openUpload(){
+  document.getElementById("uploadBackdrop").style.display = "flex";
+}
+function closePopup(){
+  document.getElementById("uploadBackdrop").style.display = "none";
+}
+
+/* ---------- SUBMIT PROOF ---------- */
+async function submitProof(){
+  const fileInput = document.getElementById("proofFile");
+  const msg = document.getElementById("uploadMsg");
+  msg.innerText = "";
+  msg.className = "";
+
+  if(!fileInput.files[0]){
+    msg.innerText = "Please select a screenshot file.";
+    msg.className = "error-text";
+    return;
+  }
+
+  const fd = new FormData();
+  fd.append("orderId", orderId);
+  fd.append("screenshot", fileInput.files[0]);
+
+  try{
+    const res = await fetch("/api/upload-proof", {
+      method:"POST",
+      body: fd
     });
+    const data = await res.json();
 
-})();
-</script>
+    if(data.success){
+      msg.innerText = "Screenshot uploaded. Verifying your payment…";
+      msg.className = "success-text";
+      closePopup();
+      document.getElementById("verifyTitle").innerText = "Payment proof received";
+      document.getElementById("verifyStatus").innerText = "We’re verifying your payment. This usually takes a few minutes.";
+      document.getElementById("verifyTimer").innerText = "You’ll be redirected automatically when approved.";
+      document.getElementById("loaderIcon").innerText = "🔍";
+      startPollingStatus();
+    } else {
+      msg.innerText = "Upload failed: " + (data.message || "Try again");
+      msg.className = "error-text";
+    }
+  }catch(e){
+    msg.innerText = "Network error. Please try again.";
+    msg.className = "error-text";
+  }
+}
 
-<!-- FAQ slider script -->
-<script>
-  (function(){
-    const faqItems = document.querySelectorAll('#faq .faq-item');
-    if(!faqItems || faqItems.length === 0) return;
+/* ---------- POLL ORDER STATUS ---------- */
+let pollInterval = null;
+function startPollingStatus(){
+  if(pollInterval) clearInterval(pollInterval);
+  pollInterval = setInterval(checkStatus, 4000);
+}
 
-    faqItems.forEach(item => {
-      const btn = item.querySelector('.faq-q');
-      const content = item.querySelector('.faq-a');
-      if(!btn || !content) return;
+async function checkStatus(){
+  try{
+    const res = await fetch(`/api/order-status/${encodeURIComponent(orderId)}`);
+    const data = await res.json();
 
-      btn.setAttribute('aria-expanded', 'false');
+    if(!data.status) return;
 
-      // initialize collapsed state
-      content.style.maxHeight = item.classList.contains('open') ? content.scrollHeight + 'px' : '0px';
+    const title = document.getElementById("verifyTitle");
+    const status = document.getElementById("verifyStatus");
+    const timer = document.getElementById("verifyTimer");
+    const loader = document.getElementById("loaderIcon");
+    const footer = document.getElementById("footerNote");
 
-      btn.addEventListener('click', () => {
-        const isOpen = item.classList.contains('open');
+    if(data.status === "approved"){
+      clearInterval(pollInterval);
+      title.innerText = "Payment Approved 🎉";
+      status.innerText = "Your payment has been verified. We’re redirecting you to your download page.";
+      timer.innerText = "";
+      loader.innerText = "🎉";
+      footer.className = "footer-note success-text";
+      footer.innerText = "Payment successful. Redirecting…";
+      setTimeout(()=>{ window.location.href = "success.html"; }, 2500);
+    } else if(data.status === "rejected"){
+      clearInterval(pollInterval);
+      title.innerText = "Payment Could Not Be Verified";
+      status.innerText = "Your payment could not be confirmed automatically. Please contact support or try again.";
+      timer.innerText = "";
+      loader.innerText = "⚠️";
+      footer.className = "footer-note error-text";
+      footer.innerText = "If money was deducted but status is rejected, please contact support with your UPI reference ID.";
+    }
+  }catch(e){
+    // silent fail; will retry
+  }
+}
 
-        // close others to keep single-open accordion behavior
-        faqItems.forEach(other => {
-          if(other === item) return;
-          other.classList.remove('open');
-          const otherA = other.querySelector('.faq-a');
-          const otherBtn = other.querySelector('.faq-q');
-          if(otherA) otherA.style.maxHeight = '0px';
-          if(otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
-        });
-
-        if(isOpen){
-          item.classList.remove('open');
-          content.style.maxHeight = '0px';
-          btn.setAttribute('aria-expanded', 'false');
-        } else {
-          item.classList.add('open');
-          // set to scrollHeight for smooth expand
-          content.style.maxHeight = content.scrollHeight + 'px';
-          btn.setAttribute('aria-expanded', 'true');
-        }
-      });
-    });
-  })();
+// Start verification flow once page loads (soft mode)
+startVerificationFlow();
 </script>
 
 </body>

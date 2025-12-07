@@ -25,11 +25,20 @@
   .faq-toggle { background:#071826; border-radius:8px; width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; color:#00ffc6; font-weight:700; margin-left:12px; transition:transform .25s ease; }
   .faq-item.open .faq-toggle { transform:rotate(45deg); }
   @media (min-width:700px){ #faq{ padding:22px; } }
+  
+  /* Contact button styles */
+  .contact-btn { position:fixed; bottom:24px; right:24px; width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg, #00ffc6, #0096ff); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:28px; box-shadow:0 4px 16px rgba(0,255,198,0.3); transition:all .25s ease; z-index:999; }
+  .contact-btn:hover { transform:scale(1.1); box-shadow:0 6px 24px rgba(0,255,198,0.5); }
+  .contact-btn:active { transform:scale(0.95); }
+  @media(max-width:480px){ .contact-btn { bottom:16px; right:16px; width:50px; height:50px; font-size:24px; } }
   </style>
 </head>
 
 <body>
 <div class="container">
+
+<!-- Contact Button -->
+<a href="https://forms.gle/y9ndDxyHaEa5WPsD8" target="_blank" class="contact-btn" title="Contact Support" aria-label="Contact Support">💬</a>
 
 <header>
   <h1>AZURE DIGITAL SOFTWARE</h1>
@@ -74,9 +83,9 @@
 <!-- in-body styles moved to head for faster first paint -->
 
 
-<!-- ⭐ Visual Value Strip -->
+<!--  Visual Value Strip -->
 <div class="value-strip">
-🔥 Most popular editing software — Trusted by 1M+ creators
+🔥Most popular editing software — Trusted by 1M+ creators
 </div>
 
 <!-- ⭐ Visual Feature Grid -->

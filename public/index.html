@@ -15,6 +15,17 @@
   <!-- load critical css non-blocking -->
   <link rel="preload" href="styles.min.css" as="style" onload="this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="styles.min.css"></noscript>
+  <style>
+  /* FAQ slider styles */
+  #faq { margin-top:24px; padding:18px; border-radius:12px; background:#071018; border:1px solid rgba(255,255,255,0.03); color:#e6eef0; }
+  .faq-item { padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.03); }
+  .faq-q { width:100%; background:transparent; border:none; color:inherit; text-align:left; font-size:15px; font-weight:700; display:flex; justify-content:space-between; align-items:center; padding:6px 0; cursor:pointer; }
+  .faq-a { max-height:0; overflow:hidden; transition:max-height .36s cubic-bezier(.2,.9,.2,1), opacity .28s ease; opacity:0; padding-right:6px; }
+  .faq-item.open .faq-a { opacity:1; padding-top:8px; }
+  .faq-toggle { background:#071826; border-radius:8px; width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; color:#00ffc6; font-weight:700; margin-left:12px; transition:transform .25s ease; }
+  .faq-item.open .faq-toggle { transform:rotate(45deg); }
+  @media (min-width:700px){ #faq{ padding:22px; } }
+  </style>
 </head>
 
 <body>
@@ -204,7 +215,44 @@ You’ll receive:
 
 
 
-<p class="note">Instant delivery</p>
+<p class="note"></p>
+
+<!-- FAQ: Most Asked Questions for Digital Product (slider/accordion) -->
+<section id="faq">
+  <h2 style="margin:0 0 8px;font-size:18px;">Most Asked Questions — Digital Product</h2>
+
+  <div class="faq-item">
+    <button class="faq-q">How will I receive the product after payment?<span class="faq-toggle">+</span></button>
+    <div class="faq-a">Instant email delivery — you'll get a secure download link, an activation key (if required) and a short step‑by‑step activation guide within seconds.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Is this a lifetime license or subscription?<span class="faq-toggle">+</span></button>
+    <div class="faq-a">Lifetime license — one payment, no recurring fees. We include activation instructions and free setup help if you need it.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Will it work on my PC or phone?<span class="faq-toggle">+</span></button>
+    <div class="faq-a">The product page notes supported platforms. Most purchases include installers for Windows (PC) and Android where applicable — compatibility details are in the activation guide.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">What if I can't activate or need help?<span class="faq-toggle">+</span></button>
+    <div class="faq-a">Reply to your receipt email or contact support from the site — we provide a clear activation guide and will help remotely if needed.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Do you offer refunds?<span class="faq-toggle">+</span></button>
+    <div class="faq-a">Refunds are handled case‑by‑case. If you encounter a delivery or activation issue, contact us and we'll assist quickly — most problems are resolved without needing a refund.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Is the download safe and malware-free?<span class="faq-toggle">+</span></button>
+    <div class="faq-a">Yes — all installers are the official files or repackaged only to include activation steps. We never include unknown binaries; scan with your antivirus if you like.</div>
+  </div>
+
+  <div style="margin-top:8px;font-size:13px;opacity:0.95;">Still have a question? Use the site contact form or reply to the order email and we’ll respond within a few hours.</div>
+</section>
 
 <footer>
   © <span id="year"></span> Azure Digital Software — All Rights Reserved.
@@ -285,6 +333,50 @@ You’ll receive:
     });
 
 })();
+</script>
+
+<!-- FAQ slider script -->
+<script>
+  (function(){
+    const faqItems = document.querySelectorAll('#faq .faq-item');
+    if(!faqItems || faqItems.length === 0) return;
+
+    faqItems.forEach(item => {
+      const btn = item.querySelector('.faq-q');
+      const content = item.querySelector('.faq-a');
+      if(!btn || !content) return;
+
+      btn.setAttribute('aria-expanded', 'false');
+
+      // initialize collapsed state
+      content.style.maxHeight = item.classList.contains('open') ? content.scrollHeight + 'px' : '0px';
+
+      btn.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+
+        // close others to keep single-open accordion behavior
+        faqItems.forEach(other => {
+          if(other === item) return;
+          other.classList.remove('open');
+          const otherA = other.querySelector('.faq-a');
+          const otherBtn = other.querySelector('.faq-q');
+          if(otherA) otherA.style.maxHeight = '0px';
+          if(otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+        });
+
+        if(isOpen){
+          item.classList.remove('open');
+          content.style.maxHeight = '0px';
+          btn.setAttribute('aria-expanded', 'false');
+        } else {
+          item.classList.add('open');
+          // set to scrollHeight for smooth expand
+          content.style.maxHeight = content.scrollHeight + 'px';
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  })();
 </script>
 
 </body>

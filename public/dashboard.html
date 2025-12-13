@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard | Azure Digital Store</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preload" href="styles.min.css" as="style" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="styles.min.css"></noscript>
+  <style>
+    body{background:#050508;color:#e6eef0;font-family:Inter,system-ui,Segoe UI,Roboto;margin:0}
+    .wrap{max-width:980px;margin:24px auto;padding:18px}
+    h1{color:#00ffc6}
+    .card{background:#071018;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:999}
+    .modal{background:#071a1f;padding:20px;border-radius:12px;max-width:420px;width:92%;box-shadow:0 12px 40px rgba(0,0,0,0.6);border:1px solid rgba(0,255,198,0.06)}
+    .modal h2{margin:0 0 8px;color:#00ffc6}
+    .modal p{margin:0 0 12px;color:#cde}
+    .modal .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;margin-right:8px}
+    .btn-primary{background:linear-gradient(90deg,#00ffc6,#0096ff);color:#00261a;font-weight:800}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#00ffc6}
+    .modal .small{display:block;margin-top:10px;color:#9ca3af;font-size:13px}
+    .close-x{position:absolute;right:14px;top:10px;color:#9ca3af;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Dashboard</h1>
+    <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">
+      <div style="flex:1;min-width:260px">
+        <div class="card" id="profileCard">
+          <h3 style="margin-top:0">Account</h3>
+          <div id="profileInfo">Not signed in</div>
+          <div style="margin-top:12px"><button id="logoutBtn" class="btn-ghost">Logout</button></div>
+        </div>
+        <div class="card" style="margin-top:12px" id="cartCard">
+          <h3 style="margin-top:0">Cart</h3>
+          <div id="cartList">(empty)</div>
+          <div style="margin-top:10px"><a href="checkout.html" style="color:#00ffc6">Go to checkout</a></div>
+        </div>
+      </div>
+
+      <div style="flex:2;min-width:320px">
+        <div class="card">
+          <h3 style="margin-top:0">Orders</h3>
+          <div id="ordersList">Loading orders…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal (hidden by default) -->
+  <div id="authModal" class="modal-backdrop" style="display:none">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <div style="position:relative">
+        <div class="close-x" id="modalClose">✕</div>
+        <h2 id="authTitle">Welcome — please register or login</h2>
+        <p>Create an account to save your orders or login if you already have one.</p>
+
+        <div style="margin-top:12px">
+          <button class="btn btn-primary" id="goRegister">Create Account</button>
+          <button class="btn btn-ghost" id="goLogin">I already have an account</button>
+        </div>
+
+        <div class="small">By continuing you agree to our <a href="terms-of-use.html" style="color:#00ffc6">Terms</a>.</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  (function(){
+    const modal = document.getElementById('authModal');
+    const close = document.getElementById('modalClose');
+    const goRegister = document.getElementById('goRegister');
+    const goLogin = document.getElementById('goLogin');
+
+    function isLoggedIn(){ try{ return !!JSON.parse(localStorage.getItem('ads_user')); }catch(e){return false} }
+
+    // Show modal if not logged in
+    window.addEventListener('DOMContentLoaded', ()=>{
+      if(!isLoggedIn()){
+        // small delay so page renders then show
+        setTimeout(()=>{ modal.style.display = 'flex'; }, 240);
+      }
+
+      // populate profile
+      try{
+        const user = JSON.parse(localStorage.getItem('ads_user')||'null');
+        const prof = document.getElementById('profileInfo');
+        if(user && prof){ prof.innerHTML = `<strong>${user.name}</strong><br><small style="color:#9ca3af">${user.email}</small>`; }
+        else if(prof){ prof.textContent = 'Not signed in'; }
+      }catch(e){}
+
+      // populate cart
+      try{
+        const cart = JSON.parse(localStorage.getItem('ads_cart')||'[]');
+        const cartList = document.getElementById('cartList');
+        if(!cart || cart.length===0){ cartList.textContent='(empty)'; }
+        else{
+          cartList.innerHTML = '';
+          cart.forEach(it=>{ const d = document.createElement('div'); d.style.margin='6px 0'; d.innerHTML = `${it.name} <small style="color:#9ca3af">x${it.qty}</small> <span style="float:right;font-weight:700">₹${Math.round(it.price*it.qty)}</span>`; cartList.appendChild(d); });
+        }
+      }catch(e){}
+
+      // load local orders
+      renderOrders();
+    });
+
+    // logout behavior
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{
+      localStorage.removeItem('ads_user');
+      window.location.reload();
+    });
+
+    // render orders function
+    function renderOrders(){
+      const list = document.getElementById('ordersList');
+      try{
+        const orders = JSON.parse(localStorage.getItem('ads_local_orders')||'[]');
+        if(!orders || orders.length===0){ list.innerHTML = '<div style="color:#9ca3af">No orders yet.</div>'; return; }
+        list.innerHTML = '';
+        orders.slice().reverse().forEach(o=>{
+          const el = document.createElement('div'); el.style.borderBottom='1px dashed rgba(255,255,255,0.03)'; el.style.padding='10px 0';
+          const when = new Date(o.createdAt).toLocaleString();
+          el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><div><strong>${o.id}</strong> <small style="color:#9ca3af">${when}</small></div><div style="font-weight:800">${o.status}</div></div>`;
+          const itemsWrap = document.createElement('div'); itemsWrap.style.marginTop='8px'; o.items.forEach(it=>{ const r = document.createElement('div'); r.style.fontSize='13px'; r.style.color='#cde'; r.innerHTML = `${it.name} <small style="color:#9ca3af">x${it.qty}</small> <span style="float:right">₹${Math.round(it.price*it.qty)}</span>`; itemsWrap.appendChild(r); });
+          el.appendChild(itemsWrap);
+
+          const actions = document.createElement('div'); actions.style.marginTop='8px';
+          const checkBtn = document.createElement('button'); checkBtn.className='btn-ghost'; checkBtn.textContent='Check Status';
+          checkBtn.addEventListener('click', ()=> checkStatus(o.id, el));
+          actions.appendChild(checkBtn);
+
+          const form = document.createElement('form'); form.style.display='inline-block'; form.style.marginLeft='8px'; form.enctype='multipart/form-data';
+          const input = document.createElement('input'); input.type='file'; input.name='screenshot'; input.accept='image/*'; input.style.display='inline-block'; input.style.marginRight='6px';
+          const upbtn = document.createElement('button'); upbtn.type='button'; upbtn.className='btn-primary'; upbtn.textContent='Upload Proof';
+          upbtn.addEventListener('click', ()=> uploadProof(o.id, input.files[0]));
+          form.appendChild(input); form.appendChild(upbtn);
+          actions.appendChild(form);
+
+          el.appendChild(actions);
+          list.appendChild(el);
+        });
+      }catch(e){ list.innerHTML = '<div style="color:#fbbf24">Error loading orders</div>' }
+    }
+
+    // check status against server
+    async function checkStatus(orderId, containerEl){
+      try{
+        const res = await fetch('/api/order-status/'+encodeURIComponent(orderId));
+        const data = await res.json();
+        if(data && data.success){
+          // update local copy if exists
+          const orders = JSON.parse(localStorage.getItem('ads_local_orders')||'[]');
+          const idx = orders.findIndex(o=>o.id===orderId);
+          if(idx>-1){ orders[idx].status = data.status; localStorage.setItem('ads_local_orders', JSON.stringify(orders)); }
+          renderOrders();
+          alert('Status: '+data.status);
+        } else { alert('Order not found on server'); }
+      }catch(e){ alert('Status check failed'); }
+    }
+
+    // upload proof to server
+    async function uploadProof(orderId, file){
+      if(!file) return alert('Please choose a file first');
+      const fd = new FormData(); fd.append('screenshot', file); fd.append('orderId', orderId);
+      try{
+        const res = await fetch('/api/upload-proof', { method: 'POST', body: fd });
+        const data = await res.json();
+        if(data && data.success){
+          // update local
+          const orders = JSON.parse(localStorage.getItem('ads_local_orders')||'[]');
+          const idx = orders.findIndex(o=>o.id===orderId);
+          if(idx>-1){ orders[idx].status = 'payment_review'; localStorage.setItem('ads_local_orders', JSON.stringify(orders)); }
+          renderOrders();
+          alert('Proof uploaded');
+        } else alert('Upload failed');
+      }catch(e){ alert('Upload error'); }
+    }
+
+    close.addEventListener('click', ()=>{ modal.style.display='none'; });
+    goRegister.addEventListener('click', ()=>{ window.location.href='register.html'; });
+    goLogin.addEventListener('click', ()=>{ window.location.href='login.html'; });
+
+    // Press ESC to close
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') modal.style.display='none'; });
+  })();
+</script>
+</body>
+</html>

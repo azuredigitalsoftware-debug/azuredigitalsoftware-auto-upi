@@ -1,0 +1,306 @@
+<script>
+// 🚨 Protect Admin Page
+if (localStorage.getItem("adminLoggedIn") !== "true") {
+  window.location.href = "admin-login.html";
+}
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel | Azure Digital Software</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #0a0f1a;
+  color: white;
+}
+
+/* HEADER */
+.header {
+  padding: 18px;
+  background: #111b2b;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #0ff6c652;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.refresh-btn {
+  background: #00ffc6;
+  color: #011;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* LOGOUT BUTTON FIXED */
+.logout-btn {
+  position: fixed;
+  right: 15px;
+  bottom: 15px;
+  background: #ff4747;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  z-index: 50;
+}
+
+/* CONTAINER */
+.container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* TABLE WRAPPER (mobile scroll) */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: #0d1522;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  text-align: left;
+  font-size: 14px;
+}
+
+/* STATUS */
+.status {
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.pending { background: #ffcc0040; color: #ffd84d; }
+.payment_review { background: #0099ff33; color: #009cff; }
+.approved { background: #00ffae33; color: #00ffa6; }
+.rejected { background: #ff333333; color: #ff8989; }
+
+/* BUTTONS */
+.btn {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  margin-right: 6px;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.approve-btn { background: #00ffc6; color:#012220; }
+.reject-btn { background: #ff6961; color: white; }
+
+.link { color: #00ffc6; cursor: pointer; }
+
+/* MOBILE */
+@media (max-width: 600px) {
+  th, td { font-size: 13px; padding: 10px; }
+  .btn { width: 100%; margin-bottom: 6px; }
+  .logout-btn { font-size: 13px; padding: 8px 14px; }
+}
+
+/* TOAST */
+#simpleToast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  background: #111b2b;
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity .3s ease;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  ADMIN PANEL
+  <button class="refresh-btn" onclick="loadOrders()">🔄 Refresh</button>
+</div>
+
+<!-- LOGOUT -->
+<button class="logout-btn" onclick="logout()">Logout</button>
+
+<div class="container">
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Proof</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="orderList"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Toast box -->
+<div id="simpleToast"></div>
+
+<!-- SOCKET.IO -->
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
+<script>
+/* ------- SOCKET.IO SETUP ------- */
+
+const socket = io({
+  auth: { token: "admin-secret" } // CHANGE THIS BEFORE DEPLOY
+});
+
+const toast = document.getElementById("simpleToast");
+
+/* play notification sound */
+const ding = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+
+function showToast(msg) {
+  toast.innerText = msg;
+  toast.style.opacity = 1;
+  setTimeout(() => { toast.style.opacity = 0; }, 3500);
+}
+
+/* Browser Notification permission */
+if ("Notification" in window && Notification.permission !== "granted") {
+  Notification.requestPermission();
+}
+
+/* Display Browser + Audio Notification */
+function notify(title, message) {
+  showToast(message);
+  ding.play().catch(()=>{});
+
+  if ("Notification" in window && Notification.permission === "granted") {
+    new Notification(title, {
+      body: message,
+      icon: "/favicon.ico"
+    });
+  }
+}
+
+/* SOCKET EVENTS */
+socket.on("order:created", order => {
+  notify("New Order Received", `Order from ${order.name}`);
+  loadOrders();
+});
+
+socket.on("order:updated", order => {
+  notify("Order Updated", `Order #${order.id} → ${order.status}`);
+  loadOrders();
+});
+
+/* ------- LOAD ORDERS ------- */
+async function loadOrders() {
+  const res = await fetch("/api/orders");
+  const orders = await res.json();
+
+  const table = document.getElementById("orderList");
+  table.innerHTML = "";
+
+  orders.slice().reverse().forEach(order => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${order.id}</td>
+      <td>${order.name}</td>
+      <td>${order.email}</td>
+      <td>${order.phone || "-"}</td>
+      <td><span class="status ${order.status}">${order.status.replace("_"," ")}</span></td>
+      <td>${order.screenshot ? `<a href="${order.screenshot}" target="_blank" class="link">📎 View</a>` : "No Upload"}</td>
+
+      <td>
+        ${order.status !== "approved" ? `
+          <button class="btn approve-btn" onclick="approveOrder('${order.id}')">Approve</button>
+          <button class="btn reject-btn" onclick="rejectOrder('${order.id}')">Reject</button>
+        ` : "✔ Completed"}
+      </td>
+    `;
+
+    table.appendChild(row);
+  });
+}
+
+/* ------- APPROVE ORDER ------- */
+async function approveOrder(orderId) {
+  const link = prompt("Enter download link to send to customer:");
+  
+  const res = await fetch(`/api/orders/${orderId}/approve`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ downloadLink: link })
+  });
+
+  const data = await res.json();
+  if (data.success) {
+    alert("✔ Approved & Email Sent!");
+    loadOrders();
+  }
+}
+
+/* ------- REJECT ORDER ------- */
+async function rejectOrder(orderId) {
+  const reason = prompt("Enter rejection reason:");
+  if (!reason) return alert("Reason required!");
+
+  await fetch(`/api/orders/${orderId}/reject`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ reason })
+  });
+
+  alert("Order Rejected");
+  loadOrders();
+}
+
+/* ------- LOGOUT ------- */
+function logout() {
+  localStorage.removeItem("adminLoggedIn");
+  window.location.href = "admin-login.html";
+}
+
+/* FIRST LOAD */
+loadOrders();
+</script>
+</body>
+</html>

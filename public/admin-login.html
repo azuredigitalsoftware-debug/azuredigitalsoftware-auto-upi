@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  background:#0a0f1a;
+  font-family:'Inter', sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  margin:0;
+  color:white;
+}
+
+/* Floating animation */
+@keyframes float {
+  0% { transform:translateY(0); }
+  50% { transform:translateY(-8px); }
+  100% { transform:translateY(0); }
+}
+
+/* MAIN LOGIN BOX */
+.box {
+  background:#111b2b;
+  padding:35px 25px;
+  border-radius:16px;
+  width:90%;
+  max-width:380px;
+  border:1px solid rgba(0,255,198,0.3);
+  box-shadow:0 0 12px rgba(0,255,198,0.1);
+  animation:float 3s infinite ease-in-out;
+  text-align:center;
+}
+
+/* Title */
+h2 {
+  text-shadow:0 0 10px #00ffc6;
+  font-size:26px;
+}
+
+.inputBox{
+  position:relative;
+  width:100%;
+}
+
+/* INPUT FIELD */
+input {
+  width:100%;
+  margin-top:14px;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid rgba(0,255,198,0.3);
+  background:#0a0f1a;
+  color:white;
+  font-size:16px;
+  outline:none;
+  transition:0.3s;
+}
+
+/* On focus */
+input:focus {
+  box-shadow:0 0 10px #00ffc688;
+  border-color:#00ffc6;
+}
+
+/* Eye icon */
+.eye {
+  position:absolute;
+  right:14px;
+  top:24px;
+  cursor:pointer;
+  font-size:18px;
+  color:#00ffc6;
+}
+
+/* BUTTON */
+.btn {
+  width:100%;
+  margin-top:25px;
+  padding:14px;
+  background:#00ffc6;
+  color:#012;
+  border:none;
+  border-radius:14px;
+  font-weight:700;
+  cursor:pointer;
+  transition:0.3s;
+  font-size:17px;
+  overflow:hidden;
+  position:relative;
+}
+.btn:active { transform:scale(0.96); }
+
+.btn::after {
+  content:"";
+  position:absolute;
+  width:0;
+  height:0;
+  top:50%;
+  left:50%;
+  background:white;
+  opacity:0.3;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  transition:0.4s ease;
+}
+.btn:active::after {
+  width:250px;
+  height:250px;
+}
+
+/* ERROR TEXT */
+.error {
+  margin-top:14px;
+  color:#ff6b6b;
+  font-size:15px;
+}
+
+/* MOBILE OPTIMIZATION */
+@media (max-width:480px) {
+  h2 { font-size:22px; }
+  .box { padding:28px 20px; }
+  input, .btn { font-size:15px; padding:12px; }
+}
+
+/* LARGE SCREEN OPTIMIZATION */
+@media (min-width:900px) {
+  h2 { font-size:28px; }
+  .box { padding:40px 30px; }
+  input, .btn { font-size:18px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>🔐 Admin Login</h2>
+
+  <div class="inputBox">
+    <input id="password" type="password" placeholder="Enter admin password">
+    <span class="eye" onclick="togglePassword()">👁</span>
+  </div>
+
+  <button class="btn" onclick="login()">Login 🚀</button>
+  <div id="msg" class="error"></div>
+</div>
+
+<script>
+const ADMIN_PASSWORD = "Bijya153029";
+
+function login() {
+  const pass = document.getElementById("password").value;
+
+  if(pass === ADMIN_PASSWORD){
+    localStorage.setItem("adminLoggedIn", "true");
+    document.querySelector(".btn").innerHTML = "✔ Verified... Redirecting";
+    setTimeout(()=> window.location.href = "admin.html", 800);
+  } else {
+    document.getElementById("msg").innerText = "❌ Incorrect Password — Try Again";
+  }
+}
+
+function togglePassword(){
+  const input = document.getElementById("password");
+  input.type = input.type === "password" ? "text" : "password";
+}
+</script>
+
+</body>
+</html>

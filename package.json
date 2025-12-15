@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "test-routes": "node scripts/test-routes.js"
+  },
+  "dependencies": {
+    "multer": "^2.0.2",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^7.0.10",
+    "serve-favicon": "^2.5.1",
+    "socket.io": "^4.8.1"
+  }
+}

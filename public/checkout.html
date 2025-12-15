@@ -49,7 +49,22 @@
     .upi-id{background:#011;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);font-weight:700}
     .copy-btn{background:#00ffc6;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:700}
 
-    @media(max-width:520px){.top-row{flex-direction:column;align-items:flex-start}.thumb{width:100%;height:120px}.summary{width:100%}}
+    @media(max-width:520px){
+      .top-row{flex-direction:column;align-items:flex-start}
+      .thumb{width:100%;height:120px}
+      .summary{width:100%}
+      /* mobile-friendly tweaks */
+      body{padding:12px}
+      .box{padding:14px 12px 120px}
+      input,textarea{padding:14px;font-size:16px}
+      .checkout-btn{position:relative;padding:16px;font-size:18px;border-radius:12px}
+      .product-top{flex-direction:row;gap:12px}
+      .product-top .pt-left img{width:80px;height:56px}
+      .product-top .pt-qty button{padding:8px 12px}
+      .upi-box{flex-direction:column;gap:8px}
+      .upi-id{font-size:15px;padding:10px 12px}
+      .copy-btn{padding:10px 12px}
+    }
   </style>
 </head>
 

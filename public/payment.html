@@ -116,6 +116,19 @@ body{
   opacity:.7;
 }
 
+.accepted-list{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:8px;font-size:13px}
+.accepted-list img{width:22px;height:22px;border-radius:4px;display:inline-block}
+.accepted-item{display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);cursor:pointer;transition:all .18s;min-width:140px;flex:0 0 auto}
+.accepted-item:hover{transform:translateY(-3px);border-color:#00ffc6;box-shadow:0 8px 20px rgba(0,255,198,0.06)}
+.accepted-item img{width:28px;height:28px;border-radius:6px}
+/* compact static layout on mobile */
+@media (max-width:480px){
+  .accepted-list{flex-direction:row;gap:8px;padding:6px 0;overflow-x:visible;justify-content:space-between;align-items:center}
+  .accepted-item{flex:1 1 0;min-width:0;justify-content:center;padding:8px;border-radius:10px}
+  .accepted-item img{width:22px;height:22px}
+  .accepted-item span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
+}
+
 /* VERIFICATION BOX */
 .verify-box{
   margin-top:20px;
@@ -238,6 +251,24 @@ body{
 @media(min-width:700px){
   .container{padding-bottom:30px;}
 }
+
+/* Mobile adjustments */
+@media (max-width:480px){
+  html,body{ -webkit-text-size-adjust:100%; }
+  .container{padding:20px 12px 120px;}
+  .qr-image{width:80%;max-width:260px}
+  .qr-card{padding:12px}
+  .order-price{font-size:20px}
+  .order-title{font-size:16px}
+  .header{padding:12px 14px}
+  .accepted-list{gap:10px;font-size:14px}
+  .accepted-list > div{display:flex;gap:8px;align-items:center}
+  .primary-btn, .secondary-btn, .popup-btn{padding:14px}
+  .popup{width:95%;max-width:400px}
+  .verify-title{font-size:15px}
+  .verify-status{font-size:14px}
+  /* mobile actions removed */
+}
 </style>
 </head>
 <body>
@@ -266,29 +297,26 @@ body{
     </div>
   </div>
 
-  <!-- UPI APP BUTTONS -->
-  <h3 style="margin-top:20px;font-size:15px;">Pay using UPI app</h3>
-  <div class="pay-options">
-    <button class="pay-btn" onclick="payWith('gpay')">
-      <img src="uploads/google pay.webp">
-      <span>Pay with Google Pay</span>
-    </button>
-    <button class="pay-btn" onclick="payWith('phonepe')">
-      <img src="uploads/OIP (2).webp">
-      <span>Pay with PhonePe</span>
-    </button>
-    <button class="pay-btn" onclick="payWith('paytm')">
-      <img src="uploads/download.webp">
-      <span>Pay with Paytm</span>
-    </button>
-    <button class="pay-btn" onclick="payWith('upi')">
-      <img src="https://img.icons8.com/fluency/48/qr-code.png">
-      <span>Other UPI apps</span>
-    </button>
-  </div>
-  <div class="other-note">
-    After completing payment in your UPI app, come back to this page for verification.
-  </div>
+    <!-- Accepted payment methods -->
+    <div class="other-note">
+      <div>Payment accepted:</div>
+      <div class="accepted-list" role="list">
+        <div class="accepted-item" role="button" tabindex="0" title="Pay using Google Pay">
+          <img src="uploads/google pay.webp" alt="Google Pay">
+          <span>Google Pay</span>
+        </div>
+        <div class="accepted-item" role="button" tabindex="0" title="Pay using PhonePe">
+          <img src="uploads/OIP (2).webp" alt="PhonePe">
+          <span>PhonePe</span>
+        </div>
+        <div class="accepted-item" role="button" tabindex="0" title="Pay using Paytm">
+          <img src="uploads/download.webp" alt="Paytm">
+          <span>Paytm</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPI details removed per request -->
 
   <!-- VERIFICATION BOX -->
   <div class="verify-box" id="verifyBox">
@@ -324,6 +352,9 @@ body{
     <div id="uploadMsg" style="margin-top:6px;font-size:12px;"></div>
   </div>
 </div>
+
+<!-- QR modal (enlarged view) -->
+<!-- QR modal removed per request -->
 
 <script>
 /* ---------- CONFIG ---------- */
@@ -367,7 +398,17 @@ function payWith(app){
 
   lastPaymentLink = link;
   startVerificationFlow();
-  window.location.href = link;
+  // Do not automatically redirect to the UPI app anymore.
+  // Instead, prepare the link and try to copy it so the user can paste it into their UPI app.
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(link).then(()=>{
+      document.getElementById("verifyStatus").innerText = "UPI link copied to clipboard. Open your UPI app and paste it to pay. Click 'I HAVE PAID' after completing payment.";
+    }).catch(()=>{
+      document.getElementById("verifyStatus").innerText = "UPI link prepared. Please open your UPI app and use the UPI ID or the QR code to pay. Click 'I HAVE PAID' after completing payment.";
+    });
+  } else {
+    document.getElementById("verifyStatus").innerText = "UPI link prepared. Please open your UPI app and use the UPI ID or the QR code to pay. Click 'I HAVE PAID' after completing payment.";
+  }
 }
 
 function reopenUPI(){
@@ -377,6 +418,7 @@ function reopenUPI(){
     window.location.href = baseUPILink();
   }
 }
+
 
 /* ---------- HYBRID VERIFICATION FLOW (12s) ---------- */
 let verifyTimerId = null;
@@ -509,4 +551,3 @@ startVerificationFlow();
 
 </body>
 </html>
-
